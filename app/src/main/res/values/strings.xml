@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Countdown</string>
+    <string name="hours_text">Hours</string>
+    <string name="minutes_text">Minutes</string>
+    <string name="seconds_text">Seconds</string>
+    <string name="button_text">VALIDATE</string>
+    <string name="button_set">SET DURATION</string>
+    <string name="button_start">START</string>
+    <string name="button_refresh">REFRESH</string>
+    <string name="button_stop">STOP</string>
+</resources>
