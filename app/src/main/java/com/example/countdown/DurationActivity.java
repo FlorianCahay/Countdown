@@ -63,8 +63,7 @@ public class DurationActivity extends AppCompatActivity {
 
         Intent intent = new Intent();
         intent.putExtra("duration", sum);
-        int resultCode = RESULT_OK;
-        setResult(resultCode, intent);
+        setResult(RESULT_OK, intent);
         finish();
     }
 

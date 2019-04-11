@@ -8,4 +8,5 @@
     <string name="button_start">START</string>
     <string name="button_refresh">REFRESH</string>
     <string name="button_stop">STOP</string>
+    <string name="end_countdown_text">END OF COUNTDOWN</string>
 </resources>
