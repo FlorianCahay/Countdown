@@ -85,7 +85,6 @@ public class CountdownActivity extends AppCompatActivity {
     // Lorsque l'on appuie sur le bouton SET DURATION
     public void changeTime(View view)
     {
-        remaining = 0;
         setDisabledButtons();
         Intent intent = new Intent(this, DurationActivity.class);
         intent.putExtra("initialDuration", 3600);
@@ -126,16 +125,14 @@ public class CountdownActivity extends AppCompatActivity {
         startButton.setEnabled(false);
         stopButton.setEnabled(true);
         refreshButton.setEnabled(true);
-        am.setExact(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + remaining , alarmIntent);
+        am.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + (countdown*1000) , alarmIntent);
         handler.post(refreshRunnable);
     }
 
     // Lorsque l'on appuie sur le bouton REFRESH
     public void onRefreshButton(View view) {
         t = SystemClock.elapsedRealtime()/1000;
-        Log.i("Refresh", String.valueOf(t));
         remaining = countdown - (t - startTime);
-        Log.i("Remaining", String.valueOf(remaining));
         setRemainingSeconds();
     }
 

@@ -50,6 +50,7 @@ public class DurationActivity extends AppCompatActivity {
         return value;
     }
 
+    // Renvoie le temps choisi en seconde
     public void onClickValidate(View view) {
 
         int valueHours = extract(hours);
