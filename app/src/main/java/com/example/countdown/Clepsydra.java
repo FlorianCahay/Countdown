@@ -27,11 +27,7 @@ public class Clepsydra extends View {
         setFillRatio(1);
     }
 
-    public Clepsydra(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    // Between 0.0 and 1.0
+    // Entre 0.0 et 1.0
     public void setFillRatio(double ratio) {
         this.ratio = ratio;
         invalidate();

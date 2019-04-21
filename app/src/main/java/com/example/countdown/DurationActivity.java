@@ -56,7 +56,7 @@ public class DurationActivity extends AppCompatActivity {
         int valueHours = extract(hours);
         int valueMinutes = extract(minutes);
         int valueSeconds = extract(seconds);
-        long sum = convertToSecond(valueHours, 0) + convertToSecond(valueMinutes, 1) + valueSeconds;
+        int sum = convertToSecond(valueHours, 0) + convertToSecond(valueMinutes, 1) + valueSeconds;
 
         String result = "Duration: " + String.valueOf(sum) + " seconds";
         Toast t = Toast.makeText(this, result, Toast.LENGTH_SHORT);
