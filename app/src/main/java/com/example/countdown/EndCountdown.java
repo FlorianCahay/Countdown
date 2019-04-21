@@ -5,6 +5,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import static android.media.RingtoneManager.TYPE_ALARM;
 
@@ -30,5 +31,9 @@ public class EndCountdown extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         player.stop();
+    }
+
+    public void quit(View view) {
+        finish();
     }
 }
