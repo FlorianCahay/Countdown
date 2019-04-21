@@ -3,6 +3,7 @@ package com.example.countdown;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -17,19 +18,25 @@ public class CountdownActivity extends AppCompatActivity {
 
     private static final int DURATION_REQUEST_CODE = 1;
     private static final int RECENT_DURATION_REQUEST_CODE = 2;
+
     private TextView tv;
     private Button startButton;
     private Button stopButton;
+    private Clepsydra clepsydra;
+
     private long countdown = 0;
     private long startTime = 0;
     private long remaining = 0;
     private long t = 0;
+    // Décompte en cours ?
     private boolean isActive = false;
+    // Rafraîchissement de l'affichage ?
     private boolean refreshment = true;
     private AlarmManager am;
     private PendingIntent alarmIntent;
     private Handler handler;
-    private Clepsydra clepsydra;
+
+
 
     Runnable refreshRunnable = () -> {
         if (remaining < 0) {
@@ -57,13 +64,15 @@ public class CountdownActivity extends AppCompatActivity {
 
         handler = new Handler();
         am = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmIntent = PendingIntent.getActivity(this, 1, new Intent(this, EndCountdown.class), 0);
+        Intent intent = new Intent(this, EndCountdown.class);
+        intent.setAction(Long.toString(System.currentTimeMillis()));
+        alarmIntent = PendingIntent.getActivity(this, 3, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         startButton = findViewById(R.id.startButton);
         stopButton = findViewById(R.id.stopButton);
         tv = findViewById(R.id.countdownTextView);
-        setDisabledButtons();
         clepsydra = findViewById(R.id.clepsydra);
+        setDisabledButtons();
     }
 
     // Quand l'activité n'est plus au 1er plan
@@ -86,7 +95,6 @@ public class CountdownActivity extends AppCompatActivity {
     {
         setDisabledButtons();
         Intent intent = new Intent(this, DurationActivity.class);
-        intent.putExtra("initialDuration", 3600);
         startActivityForResult(intent, DURATION_REQUEST_CODE);
     }
 
@@ -124,7 +132,7 @@ public class CountdownActivity extends AppCompatActivity {
         startTime = SystemClock.elapsedRealtime()/1000;
         startButton.setEnabled(false);
         stopButton.setEnabled(true);
-        am.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + (remaining*1000)-1000 , alarmIntent);
+        am.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + (remaining*1000), alarmIntent);
         handler.post(refreshRunnable);
     }
 
@@ -143,7 +151,7 @@ public class CountdownActivity extends AppCompatActivity {
             tv.setText("00:00:00");
             clepsydra.setFillRatio(0.0);
         }
-        if (refreshment && remaining >= 0) {
+        else if (refreshment && remaining >= 0) {
             long hours = remaining/3600;
             long minutes = (remaining%3600)/60;
             long seconds = remaining%60;
@@ -155,10 +163,8 @@ public class CountdownActivity extends AppCompatActivity {
         }
     }
 
-
     public void onRecentDurationsButton(View view) {
         Intent intent = new Intent(this, RecentDurationActivity.class);
-        intent.putExtra("initialDuration", 3600);
         startActivityForResult(intent, RECENT_DURATION_REQUEST_CODE);
     }
 }

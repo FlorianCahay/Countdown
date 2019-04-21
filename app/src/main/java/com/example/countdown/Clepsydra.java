@@ -42,8 +42,6 @@ public class Clepsydra extends View {
         canvas.drawRect(rect1, paint);
         paint.setColor(Color.BLUE);
         Rect rect2 = new Rect(0, getHeight() - (int)(getHeight() * ratio), getWidth(), getHeight());
-        Log.d("rectangle", rect2.toString());
         canvas.drawRect(rect2, paint);
-
     }
 }
