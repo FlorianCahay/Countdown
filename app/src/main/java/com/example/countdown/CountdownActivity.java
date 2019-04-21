@@ -2,12 +2,11 @@ package com.example.countdown;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +30,7 @@ public class CountdownActivity extends AppCompatActivity {
     private AlarmManager am;
     private PendingIntent alarmIntent;
     private Handler handler;
+    private Clepsydra clepsydra;
 
     Runnable refreshRunnable = () -> {
         if (remaining < 0) {
@@ -41,6 +41,8 @@ public class CountdownActivity extends AppCompatActivity {
             // rafraîchissement
             t = SystemClock.elapsedRealtime()/1000;
             remaining = countdown - (t - startTime);
+            Log.d("base", String.valueOf(countdown));
+            Log.d("restant", String.valueOf(remaining));
             setRemainingSeconds();
             // rappel dans 1 seconde
             handler.postDelayed(getRefreshRunnable(), 1000);
@@ -65,6 +67,7 @@ public class CountdownActivity extends AppCompatActivity {
         stopButton = findViewById(R.id.stopButton);
         tv = findViewById(R.id.countdownTextView);
         setDisabledButtons();
+        clepsydra = findViewById(R.id.clepsydra);
     }
 
     // Quand l'activité n'est plus au 1er plan
@@ -125,7 +128,7 @@ public class CountdownActivity extends AppCompatActivity {
         startButton.setEnabled(false);
         stopButton.setEnabled(true);
         refreshButton.setEnabled(true);
-        am.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + (countdown*1000) , alarmIntent);
+        am.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + (remaining*1000)-1000 , alarmIntent);
         handler.post(refreshRunnable);
     }
 
@@ -148,11 +151,20 @@ public class CountdownActivity extends AppCompatActivity {
 
     // Met à jour l'affichage du temps
     private void setRemainingSeconds() {
+        if (remaining == 0) {
+            tv.setText("00:00:00");
+            clepsydra.setFillRatio(0.0);
+        }
         if (refreshment && remaining >= 0) {
+            Log.d("refresh", "salut");
             long hours = remaining/3600;
             long minutes = (remaining%3600)/60;
             long seconds = remaining%60;
             tv.setText(String.format(Locale.FRANCE, "%02d:%02d:%02d", hours, minutes, seconds));
+            if (countdown > 0) {
+                clepsydra.setFillRatio((double)remaining/(double)countdown);
+            }
+
         }
     }
 
